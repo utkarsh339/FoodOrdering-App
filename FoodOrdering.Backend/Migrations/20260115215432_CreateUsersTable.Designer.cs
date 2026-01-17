@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodOrdering.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260115145710_CreateUsersTable")]
+    [Migration("20260115215432_CreateUsersTable")]
     partial class CreateUsersTable
     {
         /// <inheritdoc />
