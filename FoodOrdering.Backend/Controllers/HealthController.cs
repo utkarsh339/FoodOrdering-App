@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodOrdering.Backend.Controllers
 {
-    [Route("api/health")]
     [ApiController]
+    [Route("api/health")]
+    [Authorize]
     public class HealthController : ControllerBase
     {
         public IActionResult Get()
         {
-            return Ok(new { status = "Healthy" });
+            return Ok(new { status = "Healthy & Authorized" });
         }
     }
 }
