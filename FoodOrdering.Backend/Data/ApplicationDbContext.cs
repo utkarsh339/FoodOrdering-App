@@ -10,5 +10,7 @@ namespace FoodOrdering.Backend.Data
         }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Restaurant> Restaurants { get; set; }
     }
 }
