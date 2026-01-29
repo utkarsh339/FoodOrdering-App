@@ -4,6 +4,8 @@ using FoodOrdering.Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using FoodOrdering.Backend.DTOs;
 
 namespace FoodOrdering.Backend.Controllers
 {
@@ -48,6 +50,19 @@ namespace FoodOrdering.Backend.Controllers
                 restaurant.Address,
                 restaurant.IsOpen
             });
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetOpenRestaurants()
+        {
+            var restaurants = await _context.Restaurants.Where(r => r.IsOpen).Select(r => new RestaurantListItemDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Address = r.Address
+            }).ToListAsync();
+            return Ok(restaurants);
         }
     }
 }
