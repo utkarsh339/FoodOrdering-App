@@ -59,5 +59,20 @@ namespace FoodOrdering.Backend.Controllers
                 menuItem.IsAvailable
             });
         }
+
+        [HttpGet("restaurant/{restaurantId:guid}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMenuForRestaurant(Guid restaurantId)
+        {
+            var menuItems = await _context.MenuItems.Where(m => m.RestaurantId == restaurantId && m.IsAvailable).Select(m => new MenuItemResponseDto
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Description = m.Description,
+                Price = m.Price
+            }).ToListAsync();
+
+            return Ok(menuItems);
+        }
     }
 }
