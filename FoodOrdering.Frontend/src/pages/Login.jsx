@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { loginUser } from "../api/api";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,13 +16,11 @@ function Login() {
 
     try {
       const data = await loginUser(email, password);
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
+      login(data.token, data.role);
 
       alert("Login successful!");
-    } catch (err) {
-      setError("Invalid email or password: " + err.message);
+    } catch {
+      setError("Invalid email or password");
     } finally {
       setLoading(false);
     }
