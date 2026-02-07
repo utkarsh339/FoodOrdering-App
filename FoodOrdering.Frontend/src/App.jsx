@@ -1,5 +1,6 @@
 import Login from "./pages/Login";
 import { useAuth } from "./context/AuthContext";
+import RestaurantList from "./pages/RestaurantList";
 
 function App() {
   const { token, logout } = useAuth();
@@ -10,8 +11,8 @@ function App() {
 
   return (
     <div>
-      <h2>Logged In</h2>
       <button onClick={logout}>Logout</button>
+      <RestaurantList />
     </div>
   );
 }

@@ -25,3 +25,7 @@ export async function loginUser(email, password) {
     body: JSON.stringify({ email, password }),
   });
 }
+
+export function getRestaurants() {
+  return apiFetch("/restaurants");
+}
