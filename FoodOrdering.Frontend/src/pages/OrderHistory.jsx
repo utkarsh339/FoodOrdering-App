@@ -17,24 +17,49 @@ function OrderHistory() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "20px auto" }}>
-      <h2>My Orders</h2>
+    <div>
+      <h2 className="text-2xl font-semibold mb-6">My Orders</h2>
 
-      {orders.length === 0 && <p>No orders yet</p>}
+      {orders.length === 0 && (
+        <p className="text-gray-500">You haven’t placed any orders yet.</p>
+      )}
 
-      <ul>
+      <div className="space-y-4">
         {orders.map((order) => (
-          <li key={order.orderId} style={{ marginBottom: "15px" }}>
-            <strong>Order ID:</strong> {order.orderId}
-            <br />
-            <strong>Total:</strong> ₹{order.totalAmount}
-            <br />
-            <strong>Status:</strong> {getStatusText(order.status)}
-            <br />
-            <small>{new Date(order.createdAt).toLocaleString()}</small>
-          </li>
+          <div
+            key={order.orderId}
+            className="bg-white rounded-lg shadow p-5 flex justify-between items-center"
+          >
+            <div>
+              <p className="text-sm text-gray-500">Order ID</p>
+              <p className="font-mono text-xs text-gray-600">{order.orderId}</p>
+
+              <p className="mt-2 text-sm text-gray-500">Placed on</p>
+              <p className="text-sm">
+                {new Date(order.createdAt).toLocaleString()}
+              </p>
+            </div>
+
+            <div className="text-right">
+              <p className="text-lg font-bold text-green-600">
+                ₹{order.totalAmount}
+              </p>
+
+              <span
+                className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${
+                  order.status === 1
+                    ? "bg-blue-100 text-blue-700"
+                    : order.status === 4
+                      ? "bg-green-100 text-green-700"
+                      : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {getStatusText(order.status)}
+              </span>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -1,33 +1,32 @@
-import Login from "./pages/Login";
-import { useAuth } from "./context/AuthContext";
-import RestaurantList from "./pages/RestaurantList";
 import { useState } from "react";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RestaurantList from "./pages/RestaurantList";
 import OrderHistory from "./pages/OrderHistory";
+import Navbar from "./components/Navbar";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
   const { token, logout } = useAuth();
   const [page, setPage] = useState("restaurants");
+  const [authPage, setAuthPage] = useState("login");
 
   if (!token) {
-    return <Login />;
+    return authPage === "login" ? (
+      <Login onSwitchToRegister={() => setAuthPage("register")} />
+    ) : (
+      <Register onSwitchToLogin={() => setAuthPage("login")} />
+    );
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-blue-600">Food Ordering App</h1>
+    <div className="min-h-screen bg-gray-100">
+      <Navbar currentPage={page} onNavigate={setPage} onLogout={logout} />
 
-      <div style={{ marginBottom: "20px" }}>
-        <button onClick={() => setPage("restaurants")}>Restaurants</button>
-        <button
-          onClick={() => setPage("orders")}
-          style={{ marginLeft: "10px" }}
-        >
-          My Orders
-        </button>
-        <button onClick={logout}>Logout</button>
-      </div>
-      {page === "restaurants" && <RestaurantList />}
-      {page === "orders" && <OrderHistory />}
+      <main className="max-w-5xl mx-auto p-4">
+        {page === "restaurants" && <RestaurantList />}
+        {page === "orders" && <OrderHistory />}
+      </main>
     </div>
   );
 }

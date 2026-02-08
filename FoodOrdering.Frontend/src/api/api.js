@@ -26,6 +26,13 @@ export async function loginUser(email, password) {
   });
 }
 
+export async function registerUser(data) {
+  return apiFetch("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
 export function getRestaurants() {
   return apiFetch("/restaurants");
 }

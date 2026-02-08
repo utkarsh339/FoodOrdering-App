@@ -28,23 +28,36 @@ function RestaurantList() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "20px auto" }}>
-      <h2>Restaurants</h2>
+    <div>
+      <h2 className="text-2xl font-semibold mb-6">Restaurants</h2>
 
-      {restaurants.length === 0 && <p>No restaurants available</p>}
+      {restaurants.length === 0 && (
+        <p className="text-gray-500">No restaurants available</p>
+      )}
 
-      <ul>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {restaurants.map((r) => (
-          <li key={r.id} style={{ marginBottom: "15px" }}>
-            <h3>{r.name}</h3>
-            <p>{r.description}</p>
-            <p>
-              <strong>Address:</strong> {r.address}
-            </p>
-            <button onClick={() => setSelectedRestaurant(r)}>View Menu</button>
-          </li>
+          <div
+            key={r.id}
+            className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-5 flex flex-col justify-between"
+          >
+            <div>
+              <h3 className="text-lg font-bold text-gray-800">{r.name}</h3>
+
+              <p className="text-sm text-gray-600 mt-2">{r.description}</p>
+
+              <p className="text-sm text-gray-500 mt-2">📍 {r.address}</p>
+            </div>
+
+            <button
+              onClick={() => setSelectedRestaurant(r)}
+              className="mt-4 bg-orange-500 text-white py-2 rounded hover:bg-orange-600 transition"
+            >
+              View Menu
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
