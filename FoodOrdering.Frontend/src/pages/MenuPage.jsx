@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getMenuByRestaurant } from "../api/api";
+import { useCart } from "../context/CartContext";
+import CartSummary from "../components/CartSummary";
 
 function MenuPage({ restaurant, onBack }) {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { addToCart } = useCart();
 
   useEffect(() => {
     getMenuByRestaurant(restaurant.id)
@@ -30,9 +33,22 @@ function MenuPage({ restaurant, onBack }) {
             <h4>{item.name}</h4>
             <p>{item.description}</p>
             <strong>₹{item.price}</strong>
+            <br />
+            <button
+              onClick={() =>
+                addToCart({
+                  menuItemId: item.id,
+                  name: item.name,
+                  price: item.price,
+                })
+              }
+            >
+              Add to Cart
+            </button>
           </li>
         ))}
       </ul>
+      <CartSummary />
     </div>
   );
 }
