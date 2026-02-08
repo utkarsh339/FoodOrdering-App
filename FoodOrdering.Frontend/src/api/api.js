@@ -48,3 +48,7 @@ export function placeOrder(restaurantId, cartItems) {
     body: JSON.stringify(payload),
   });
 }
+
+export function getMyOrders() {
+  return apiFetch("/orders/my");
+}
