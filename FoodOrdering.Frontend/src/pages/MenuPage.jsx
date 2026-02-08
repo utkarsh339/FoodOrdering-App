@@ -7,13 +7,20 @@ function MenuPage({ restaurant, onBack }) {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { addToCart } = useCart();
+  const { addToCart, clearCart } = useCart();
 
   useEffect(() => {
+    setLoading(true);
+    setError("");
+
     getMenuByRestaurant(restaurant.id)
       .then((data) => setMenu(data))
       .catch(() => setError("Failed to load menu"))
       .finally(() => setLoading(false));
+  }, [restaurant.id]);
+
+  useEffect(() => {
+    clearCart();
   }, [restaurant.id]);
 
   if (loading) return <p>Loading menu...</p>;
@@ -48,7 +55,7 @@ function MenuPage({ restaurant, onBack }) {
           </li>
         ))}
       </ul>
-      <CartSummary />
+      <CartSummary restaurantId={restaurant.id} />
     </div>
   );
 }

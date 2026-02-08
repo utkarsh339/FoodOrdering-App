@@ -1,7 +1,12 @@
 import { useCart } from "../context/CartContext";
+import { placeOrder } from "../api/api";
+// import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
-function CartSummary() {
-  const { cartItems, updateQuantity, removeFromCart } = useCart();
+function CartSummary({ restaurantId }) {
+  const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   if (cartItems.length === 0) return null;
 
@@ -10,9 +15,27 @@ function CartSummary() {
     0,
   );
 
+  const handlePlaceOrder = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      await placeOrder(restaurantId, cartItems);
+      alert("Order placed successfully");
+      clearCart();
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to place order");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ borderTop: "1px solid #ccc", marginTop: "20px" }}>
       <h3>Cart</h3>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       {cartItems.map((item) => (
         <div key={item.menuItemId}>
@@ -33,6 +56,10 @@ function CartSummary() {
         </div>
       ))}
       <h4>Total: ₹{total}</h4>
+
+      <button onClick={handlePlaceOrder} disabled={loading}>
+        {loading ? "Placing Order..." : "Place Order"}
+      </button>
     </div>
   );
 }

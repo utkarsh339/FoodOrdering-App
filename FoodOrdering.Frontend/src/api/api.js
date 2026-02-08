@@ -33,3 +33,18 @@ export function getRestaurants() {
 export function getMenuByRestaurant(restaurantId) {
   return apiFetch(`/menu-items/restaurant/${restaurantId}`);
 }
+
+export function placeOrder(restaurantId, cartItems) {
+  const payload = {
+    restaurantId,
+    items: cartItems.map((item) => ({
+      menuItemId: item.menuItemId,
+      quantity: item.quantity,
+    })),
+  };
+
+  return apiFetch("/orders", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
