@@ -29,3 +29,7 @@ export async function loginUser(email, password) {
 export function getRestaurants() {
   return apiFetch("/restaurants");
 }
+
+export function getMenuByRestaurant(restaurantId) {
+  return apiFetch(`/menu-items/restaurant/${restaurantId}`);
+}

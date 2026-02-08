@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { getRestaurants } from "../api/api";
+import MenuPage from "./MenuPage";
 
 function RestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -12,6 +14,15 @@ function RestaurantList() {
       .catch(() => setError("Failed to load restaurants"))
       .finally(() => setLoading(false));
   }, []);
+
+  if (selectedRestaurant) {
+    return (
+      <MenuPage
+        restaurant={selectedRestaurant}
+        onBack={() => setSelectedRestaurant(null)}
+      />
+    );
+  }
 
   if (loading) return <p>Loading restaurants...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -30,6 +41,7 @@ function RestaurantList() {
             <p>
               <strong>Address:</strong> {r.address}
             </p>
+            <button onClick={() => setSelectedRestaurant(r)}>View Menu</button>
           </li>
         ))}
       </ul>
